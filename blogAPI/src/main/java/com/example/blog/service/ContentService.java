@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.blog.dto.AllContentListDTO;
 import com.example.blog.dto.PublishedContentListDTO;
 import com.example.blog.repository.ContentRepository;
 
@@ -16,5 +17,9 @@ public class ContentService {
 
     public List<PublishedContentListDTO> getPublishedArticles() {
         return contentRepository.findPublishedArticles();
+    }
+
+    public List<AllContentListDTO> getAllArticles() {
+        return contentRepository.findAllArticles();
     }
 }

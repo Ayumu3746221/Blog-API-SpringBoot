@@ -1,6 +1,7 @@
 **.sql
-**/application.properties
+**/application-local.properties
 SQL
 .vscode 
 .metadata
 .mvn
+**.env

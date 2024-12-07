@@ -31,6 +31,10 @@ public class Content {
     @JsonProperty("title")
     private String title;
 
+    @Column(name="excerpt")
+    @JsonProperty("excerpt")
+    private String excerpt;
+
     @Column(name="image_url")
     @JsonProperty("imageUrl")
     private String imageUrl;

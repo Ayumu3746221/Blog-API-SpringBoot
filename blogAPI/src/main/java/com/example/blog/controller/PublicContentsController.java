@@ -24,8 +24,8 @@ public class PublicContentsController {
         return contentService.getPublishedArticles();
     }
 
-    @GetMapping("/articles/{id}")
-    public ArticleDTO getArticleByContentId(@PathVariable("id") Integer contentId) {
+    @GetMapping("/articles/{contentId}")
+    public ArticleDTO getArticleByContentId(@PathVariable("contentId") Integer contentId) {
         return contentService.getArticleByContentId(contentId);
     }
 }

@@ -15,6 +15,8 @@ import com.example.blog.entity.Content;
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Integer>{
     
+    Content findByContentId(Integer contentId);
+
     @Query(value = "SELECT new com.example.blog.dto.PublishedContentListDTO(c.contentId, c.title, c.excerpt, c.imageUrl) FROM Content c WHERE c.isPublished = TRUE")
     List<PublishedContentListDTO> findPublishedArticles();
 

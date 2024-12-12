@@ -23,6 +23,6 @@ public interface ContentRepository extends JpaRepository<Content, Integer>{
     @Query(value = "SELECT new com.example.blog.dto.AllContentListDTO(c.contentId, c.title, c.updatedAt, c.isPublished) FROM Content c")
     List<AllContentListDTO> findAllArticles();
 
-    @Query(value = "SELECT new com.example.blog.dto.ArticleDTO(c.title, c.imageUrl, c.contentUrl, c.updatedAt) FROM Content c WHERE isPublished = TRUE AND c.contentId = :contentId")
+    @Query(value = "SELECT new com.example.blog.dto.ArticleDTO(c.title,c.excerpt ,c.imageUrl, c.contentUrl, c.updatedAt) FROM Content c WHERE isPublished = TRUE AND c.contentId = :contentId")
     ArticleDTO findArticleByContentId(@Param("contentId") Integer contentId);
 }

@@ -49,7 +49,5 @@ public class GCSFilesService {
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new Exception("Failed to upload file to GCS: " + response.getBody());
         }
-
-        System.out.println("File uploaded successfully to GCS");
     }
 }

@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.blog.dto.AllContentListDTO;
 import com.example.blog.dto.UpdateArticleDTO;
+import com.example.blog.response.UpdateErrorResponse;
+import com.example.blog.response.UpdateSuccessResponse;
 import com.example.blog.service.ContentService;
 import com.example.blog.service.FileService;
 import com.example.blog.service.FilenameService;
@@ -41,7 +45,7 @@ public class AuthenticatedContentsController {
     }
 
     @PostMapping("/authenticated/update/content")
-    public String postMethodName(@RequestBody UpdateArticleDTO updateArticleDTO) {
+    public ResponseEntity<?> postMethodName(@RequestBody UpdateArticleDTO updateArticleDTO) {
 
         String objectName = filenameService.getObjectName(updateArticleDTO.getContentId());
         
@@ -52,10 +56,10 @@ public class AuthenticatedContentsController {
 
             contentService.updateArticle(updateArticleDTO);
         } catch (Exception e) {
-            return "Failed to upload file" + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new UpdateErrorResponse("File upload failed" , e.getMessage()));
         }
         
-        return "File uploaded successfully";
+        return ResponseEntity.ok(new UpdateSuccessResponse("File uploaded successfully:" + objectName));
     }
     
 }

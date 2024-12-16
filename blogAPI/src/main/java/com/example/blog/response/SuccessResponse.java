@@ -1,9 +1,9 @@
 package com.example.blog.response;
 
-public class UpdateSuccessResponse {
+public class SuccessResponse {
     private final String message;
 
-    public UpdateSuccessResponse(String message) {
+    public SuccessResponse(String message) {
         this.message = message;
     }
 

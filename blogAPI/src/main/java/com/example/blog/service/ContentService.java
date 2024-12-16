@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.blog.dto.AllContentListDTO;
 import com.example.blog.dto.ArticleDTO;
+import com.example.blog.dto.ContentDTO;
 import com.example.blog.dto.PublishedContentListDTO;
 import com.example.blog.dto.UpdateArticleDTO;
 import com.example.blog.entity.Content;
@@ -36,5 +37,15 @@ public class ContentService {
         Content newContent = updateArticleDTO.updateEntity(oldContent, updateArticleDTO.getTitle(), updateArticleDTO.getExcerpt(), updateArticleDTO.getImageUrl(), updateArticleDTO.getIsPublished());
 
         contentRepository.save(newContent);
+    }
+
+    public Content createArticle(ContentDTO contentDTO , String contentUrl) {
+        Content newContent = contentDTO.toEntity(contentUrl);
+        Content savedContent = contentRepository.save(newContent);
+        return savedContent;
+    }
+
+    public void deleteArticle(Integer contentId) {
+        contentRepository.deleteById(contentId);
     }
 }

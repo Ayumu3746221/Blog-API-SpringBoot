@@ -62,7 +62,7 @@ public class AuthenticatedContentsController {
         String objectName = filenameService.getObjectName(updateArticleDTO.getContentId());
         
         try {
-            Path tmpFilePath = fileService.createMarkdownFile(objectName, updateArticleDTO.getContent());
+            Path tmpFilePath = fileService.createMarkdownFile(objectName, updateArticleDTO.getContent());          
             gcsFilesService.uploadArticleFile(objectName, tmpFilePath);
             fileService.deleteFile(tmpFilePath);
 

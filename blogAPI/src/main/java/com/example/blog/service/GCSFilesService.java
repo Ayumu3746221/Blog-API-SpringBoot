@@ -5,6 +5,7 @@ import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
@@ -21,6 +22,9 @@ public class GCSFilesService {
     @Value("${gcs.bucket-name}")
     private String bucketName;
 
+    @Value("${gcs.bucket-url}")
+    private String bucketUrl;
+
     private Storage getStorage() {
         return StorageOptions.newBuilder().setProjectId(projectId).build().getService();
     }
@@ -32,9 +36,11 @@ public class GCSFilesService {
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/markdown").build();
        
         byte[] fileBytes = Files.readAllBytes(tmpFilePath);
-        Blob response =  storage.create(blobInfo, fileBytes);
+        storage.create(blobInfo, fileBytes);
 
-        return  response.getMediaLink();
+        String url = bucketUrl + fullObjectName;
+
+        return  url;
     }
 
     public void deleteArticleFile(String objectName) throws Exception {
@@ -42,5 +48,35 @@ public class GCSFilesService {
         String fullObjectName = "articles/" + objectName;
         BlobId blobId = BlobId.of(bucketName, fullObjectName);
         storage.delete(blobId);
+    }
+
+    public String uploadImageFile(String objectName , MultipartFile file) throws Exception {
+        Storage storage = getStorage();
+        String fullObjectName = "images/" + objectName;
+        BlobId blobId = BlobId.of(bucketName, fullObjectName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
+
+        byte[] fileBytes = file.getBytes();
+        storage.create(blobInfo, fileBytes);
+
+        String url = bucketUrl + fullObjectName;
+
+        return url;
+    }
+
+    public void deleteImageFile(String objectName) throws Exception {
+        Storage storage = getStorage();
+        String fullObjectName = "images/" + objectName;
+        BlobId boloId = BlobId.of(bucketName, fullObjectName);
+        
+        Blob blob = storage.get(boloId);
+        if (blob == null) {
+            throw new IllegalArgumentException("Object not found:" + fullObjectName);
+        }
+
+        boolean deleted = storage.delete(boloId);
+        if (!deleted) {
+            throw new RuntimeException("Error deleting object:" + fullObjectName);
+        }
     }
 }

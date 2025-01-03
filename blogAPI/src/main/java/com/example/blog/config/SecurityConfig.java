@@ -32,15 +32,14 @@ public class SecurityConfig {
         http
             .csrf((csrf) -> csrf.disable())
             .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests((auth) -> auth
-            .requestMatchers("/api/public/**").permitAll()
+            .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/auth/**").authenticated()
+            .requestMatchers("/api/public/**").permitAll()
             .anyRequest().permitAll()
             )
             .addFilterBefore(googleTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

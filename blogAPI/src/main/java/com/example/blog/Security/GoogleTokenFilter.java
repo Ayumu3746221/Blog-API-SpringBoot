@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.accept.ServletPathExtensionContentNegotiationStrategy;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,6 +27,13 @@ public class GoogleTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
         throws ServletException , IOException{
+
+            String path = request.getRequestURI();
+
+            if (!path.startsWith("/api/auth")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             String authHeader = request.getHeader("Authorization");
 

@@ -22,7 +22,6 @@
 **デプロイ先等**
 
 - Render.com
-- APIリクエスト先：https://my-blog-api-au9m.onrender.com/
 - Google Cloud Storage
 - Google Cloud SQL for PostgreSQL
 
